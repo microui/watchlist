@@ -14,9 +14,11 @@
         </li>  {# 等同于 movie['title'] #}
         {% endfor %}  {# 使用 endfor 标签结束 for 语句 #}
     </ul>
+    {% if current_user.is_authenticated %}
     <form method="post">
         Name <input type="text" name="title" autocomplete="off" required>
         Year <input type="text" name="year" autocomplete="off" required>
         <input class="btn" type="submit" name="submit" value="Add">
     </form>
+    {% endif %}
 {% endblock %}
