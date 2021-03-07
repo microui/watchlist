@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+    <p>{{ article|length }} Titles</p>
+    <ul class="movie-list">
+        {% for item in article %}  {# 迭代 movie 变量 #}
+        <li>
+            {{ item.title }} - {{item.author.name}}
+            <span class="float-right">
+                <a class="btn" href="{{url_for('edit', movie_id = item.id)}}">edit</a>
+                <form class="inline-form" method="post" action="{{ url_for('article_delete', article_id=item.id) }}">
+                    <input class="btn" type="submit" name="delete" value="Delete" onclick="return confirm('Are you sure?')">
+                </form>
+            </span>
+        </li>  {# 等同于 movie['title'] #}
+        {% endfor %}  {# 使用 endfor 标签结束 for 语句 #}
+    </ul>
+    {% if current_user.is_authenticated %}
+    <form method="post">
+        title <input type="text" name="title" autocomplete="off" required>
+        content <input type="text" name="content" autocomplete="off" required>
+        <input class="btn" type="submit" name="submit" value="Add">
+    </form>
+    {% endif %}
+{% endblock %}

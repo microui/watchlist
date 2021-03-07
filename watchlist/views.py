@@ -2,7 +2,7 @@ from flask import request, redirect, url_for, flash, render_template
 from flask_login import current_user, logout_user, login_user, login_required
 
 from watchlist import app, db
-from watchlist.models import Movie, User
+from watchlist.models import Movie, User, Article
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -104,6 +104,34 @@ def edit(movie_id):
 def delete(movie_id):
     movie = Movie.query.get_or_404(movie_id)
     db.session.delete(movie)
+    db.session.commit()  # 提交数据库会话
+    flash('Item delete.')  # 显示成功创建的提示
+    return redirect(url_for('index'))  # 重定向回主页
+
+
+@app.route('/article/list')
+def article():
+    article_list = Article.query.all()
+    print('article_list', article_list)
+    for item in article_list:
+        print(item.author)
+    return render_template('article.html', article=article_list)
+
+
+@app.route('/user/list')
+def user_list():
+    users = User.query.all()
+    print('users', users)
+    for user in users:
+        print(user.article)
+    return render_template('user.html', users=users)
+
+
+@app.route('/article/delete/<int:article_id>', methods=['POST'])
+@login_required
+def article_delete(article_id):
+    article_item = Article.query.get_or_404(article_id)
+    db.session.delete(article_item)
     db.session.commit()  # 提交数据库会话
     flash('Item delete.')  # 显示成功创建的提示
     return redirect(url_for('index'))  # 重定向回主页

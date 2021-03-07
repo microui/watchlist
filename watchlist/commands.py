@@ -1,6 +1,6 @@
 import click
 from watchlist import app, db
-from watchlist.models import User, Movie
+from watchlist.models import User, Movie, Article
 
 # 注册为命令
 @app.cli.command()
@@ -34,15 +34,19 @@ def forge():
         {'title': 'WALL-E', 'year': '2008'},
         {'title': 'The Pork of Music', 'year': '2012'},
     ]
+    title = 'test article'
+    content = 'this is a test article'
 
     user = User(name=name)
     db.session.add(user)
     for m in movies:
         movie = Movie(title=m['title'], year=m['year'])
         db.session.add(movie)
-
+    article = Article(title=title, content=content, author_id=2)
+    db.session.add(article)
     db.session.commit()
     click.echo('Done.')
+
 
 @app.cli.command()
 @click.option('--username', prompt=True, help='The username used to login.')
