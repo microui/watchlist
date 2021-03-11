@@ -1,4 +1,5 @@
 import click
+
 from watchlist import app, db
 from watchlist.models import User, Movie, Article
 
@@ -21,7 +22,8 @@ def forge():
     db.create_all()
 
     # 全局的两个变量移动到这个函数内
-    name = 'Grey Li'
+    name = 'Test_USER'
+    username = 'test'
     movies = [
         {'title': 'My Neighbor Totoro', 'year': '1988'},
         {'title': 'Dead Poets Society', 'year': '1989'},
@@ -37,7 +39,8 @@ def forge():
     title = 'test article'
     content = 'this is a test article'
 
-    user = User(name=name)
+    user = User(name=name, username=username)
+    User.set_password(user, 'test')
     db.session.add(user)
     for m in movies:
         movie = Movie(title=m['title'], year=m['year'])

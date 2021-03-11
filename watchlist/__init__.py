@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from os import path
 
 
@@ -29,8 +29,7 @@ def load_user(user_id):  # 创建用户加载回调函数，接受用户 ID 作�
 @app.context_processor
 def inject_user():
     from watchlist.models import User
-    user = User.query.first()
-    return dict(user=user)
+    return dict(user=current_user)
 
 
 from watchlist import commands, errors, models, views

@@ -1,10 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
-    <p>{{ article|length }} Titles</p>
+    <label>{{ article|length }} Titles</label>
+    <form action="{{url_for('article_search')}}">
+        查询 <input type="text" name="keyword" autocomplete="off">
+        <input class="btn" type="submit" name="submit" value="Search">
+    </form>
     <ul class="movie-list">
         {% for item in article %}  {# 迭代 movie 变量 #}
         <li>
-            {{ item.title }} - {{item.author.name}}
+            {{ item.title }}--{{item.user.name}}
             <span class="float-right">
                 <a class="btn" href="{{url_for('edit', movie_id = item.id)}}">edit</a>
                 <form class="inline-form" method="post" action="{{ url_for('article_delete', article_id=item.id) }}">
